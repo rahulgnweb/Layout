@@ -5,6 +5,8 @@ import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import type { GridColDef } from '@mui/x-data-grid';
+
 import {
   Box,
   Menu,
@@ -24,6 +26,7 @@ import {
 import { Iconify } from '../iconify';
 
 import type { StaffData } from './types';
+import { ExportExcelDialog } from '../custom-dialog';
 
 interface CustomToolbarProps {
   onOpenFilter: (open: boolean) => void;
@@ -34,6 +37,7 @@ interface CustomToolbarProps {
   selectionModel: GridRowSelectionModel;
   setSelectionModel: React.Dispatch<React.SetStateAction<GridRowSelectionModel>>;
   rows: StaffData[];
+  columns: GridColDef[];
 }
 
 const CustomToolbar = ({
@@ -45,6 +49,7 @@ const CustomToolbar = ({
   selectionModel,
   setSelectionModel,
   rows,
+  columns,
 }: CustomToolbarProps) => {
   const theme = useTheme();
 
@@ -85,6 +90,25 @@ const CustomToolbar = ({
   const handleClear = () => {
     setSelectionModel([]);
     handleClose();
+  };
+
+  const [openExcelDialog, setOpenExcelDialog] = useState(false);
+  const [selectedExportColumns, setSelectedExportColumns] = useState<string[]>(
+    columns.map((col) => col.field)
+  );
+
+  const handleExport = (selectedFields: string[]) => {
+    const filteredData = rows.map((row) => {
+      const filteredRow: any = {};
+      selectedFields.forEach((field) => {
+        filteredRow[field] = row[field];
+      });
+      return filteredRow;
+    });
+
+    console.log('Exporting data:', filteredData);
+
+    // TODO: Replace this with actual Excel export logic, e.g., XLSX.utils
   };
 
   return (
@@ -210,7 +234,7 @@ const CustomToolbar = ({
           <MenuItem
             onClick={() => {
               handleExportClose();
-              console.log('Exporting to Excel');
+              setOpenExcelDialog(true);
             }}
           >
             Export as Excel
@@ -220,7 +244,7 @@ const CustomToolbar = ({
         <Button
           variant="contained"
           startIcon={<AddIcon />}
-          color="success"
+          color="primary"
           sx={{ textTransform: 'none', fontSize: 14, fontWeight: '400' }}
           onClick={onAddNew}
         >
@@ -291,6 +315,37 @@ const CustomToolbar = ({
           </Box>
         </Box>
       )}
+      <ExportExcelDialog
+        open={openExcelDialog}
+        onClose={() => setOpenExcelDialog(false)}
+        title="Export to Excel"
+        content="Choose the columns you want to include in the export."
+        columns={[
+          { field: 'specializationID', headerName: 'ID' },
+          { field: 'specializationName', headerName: 'Name' },
+          { field: 'specializationShortName', headerName: 'Short Name' },
+          { field: 'courseID', headerName: 'Course ID' },
+          { field: 'courseName', headerName: 'Course Name' },
+          { field: 'courseShortName', headerName: 'Course Short Name' },
+          { field: 'description', headerName: 'Description' },
+          //{ field: 'isActive', headerName: 'Active' },
+        ]}
+        selectedColumns={selectedExportColumns}
+        setSelectedColumns={setSelectedExportColumns}
+        action={
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              handleExport(selectedExportColumns);
+              setOpenExcelDialog(false);
+            }}
+            sx={{ fontWeight: 400 }}
+          >
+            Confirm Export
+          </Button>
+        }
+      />
     </Box>
   );
 };

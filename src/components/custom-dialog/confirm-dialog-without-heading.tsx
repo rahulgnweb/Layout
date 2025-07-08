@@ -9,7 +9,6 @@ import type { ConfirmDialogWithoutHeadingProps } from './types';
 
 export function ConfirmDialogWithoutHeading({
   open,
-  title,
   action,
   content,
   onClose,
@@ -24,7 +23,7 @@ export function ConfirmDialogWithoutHeading({
       {...other}
       sx={{ justifyContent: 'center' }}
     >
-      {/* <DialogTitle sx={{ pb: 2 }}>{title}</DialogTitle> */}
+    
 
       {content && (
         <DialogContent sx={{ typography: 'body2', pt: 3, textAlign: 'center' }}>

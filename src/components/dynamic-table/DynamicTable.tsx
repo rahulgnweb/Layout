@@ -226,6 +226,7 @@ const DynamicTable = () => {
               selectionModel={selectionModel}
               setSelectionModel={setSelectionModel}
               rows={rows}
+              columns={columns}
             />
           ),
           footer: CustomFooter,

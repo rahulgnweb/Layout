@@ -98,7 +98,7 @@ export function DynamicForm({ open, onClose, initialData, isEditMode }: Props) {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={onClose}>
+          <Button variant="outlined" onClick={onClose} sx={{ fontWeight: 400 }}>
             Cancel
           </Button>
           <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
