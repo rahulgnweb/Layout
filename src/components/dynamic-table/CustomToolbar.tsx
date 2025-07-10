@@ -321,10 +321,10 @@ const CustomToolbar = ({
         title="Export to Excel"
         content="Choose the columns you want to include in the export."
         columns={[
-          { field: 'specializationID', headerName: 'ID' },
+          //{ field: 'specializationID', headerName: 'ID' },
           { field: 'specializationName', headerName: 'Name' },
           { field: 'specializationShortName', headerName: 'Short Name' },
-          { field: 'courseID', headerName: 'Course ID' },
+          //{ field: 'courseID', headerName: 'Course ID' },
           { field: 'courseName', headerName: 'Course Name' },
           { field: 'courseShortName', headerName: 'Course Short Name' },
           { field: 'description', headerName: 'Description' },
